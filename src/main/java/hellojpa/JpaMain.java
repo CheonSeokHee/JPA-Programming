@@ -31,16 +31,14 @@ public class JpaMain {
         try {
 
             Team team = new Team();
-            team.setName("내가만든 TeamA");
+            team.setName("내가만든 Team2");
             em.persist(team);
 
 
             Member member = new Member();
-            member.setUsername("member1");
+            member.setUsername("member2");
             member.setTeam(team);
             em.persist(member);
-
-            Member findMember = em.find(Member.class, member.getId());
 
 
 
