@@ -27,8 +27,12 @@ public class Member {
         return team;
     }
 
-    public void setTeam(Team team) {
+    //getter, setter 관례에 상관없이 메소드 이름을 바꿔주는것을 추천
+    public void changeTeam(Team team) {
+
         this.team = team;
+
+        team.getMembers().add(this);
     }
 
     public Long getId() {

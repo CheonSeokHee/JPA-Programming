@@ -4,6 +4,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+import java.util.List;
 
 public class JpaMain {
 
@@ -31,17 +32,48 @@ public class JpaMain {
         try {
 
             Team team = new Team();
-            team.setName("내가만든 Team2");
+            team.setName("TeamA");
             em.persist(team);
 
 
             Member member = new Member();
-            member.setUsername("member2");
-            member.setTeam(team);
+            member.setUsername("member1");
+            //연관관계의 주인에 값 설정
+            member.changeTeam(team);
             em.persist(member);
 
+            //역방향만 연관관계 설정
+            //넣어주지 않을 시 객체지향스럽지 못함
+            //team.getMembers().add(member);
 
+            em.flush();
+            em.clear();
 
+           Team findTeam = em.find(Team.class, team.getId()); //1차 캐시
+            List<Member> members = findTeam.getMembers();
+
+            for (Member m: members) {
+                System.out.println("m = " + m.getUsername());
+            }
+            //
+
+//            //영속성 컨텍스트로 인해 1차캐시에서 find 했다는 의미
+//            Member findMember = em.find(Member.class, member.getId());
+//
+//            List<Member> members =   findMember.getTeam().getMembers();
+//
+//            System.out.println("member 이름 찾아보자");
+//
+//            for (Member m: members) {
+//                System.out.println("m = " + m.getUsername());
+//
+//            }
+//            System.out.println("Team을 꺼내기 전");
+//
+//            Team findTeam = findMember.getTeam();
+//            System.out.println("findTeam = " + findTeam.getName());
+//
+//            System.out.println("Team을 꺼낸 후");
 
             tx.commit();
 
